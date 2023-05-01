@@ -1,7 +1,6 @@
 package Person;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class User {
     private static int id = 0;
