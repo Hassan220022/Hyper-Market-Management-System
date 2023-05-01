@@ -11,8 +11,7 @@ public class Sales extends Employee {
     private static HashMap<String, Integer> salesMap = new HashMap<>();
 
     public Sales(String username, String password) {
-        super(username, password);
-        this.type = "Sales";
+        super(username, password, "Sales");
         salesArrayList.add(this);
         salesMap.put(username, getId());
     }

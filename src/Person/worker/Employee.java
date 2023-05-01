@@ -1,25 +1,26 @@
 package Person.worker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class Employee {
 
     private static int id = 0;
     protected String username;
     protected String password;
+    protected HashSet<String> type = new HashSet<>();
     protected static ArrayList<Employee> employees = new ArrayList<>();
-    protected static HashMap<String, Integer> employeeMap = new HashMap<>();
+    protected static HashMap<Employee, Integer> employeeMap = new HashMap<>();
 
-    public Employee(String username, String password) {
+    public Employee(String username, String password, String type) {
         id++;
         this.username = username;
         this.password = password;
+        this.type.add(type);
         employees.add(this);
-        employeeMap.put(username, id);
+        employeeMap.put(this, id);
     }
 
-    public static void addEmployee(Employee employee) {
+    protected static void addEmployee_To_ArrayList(Employee employee) {
         employees.add(employee);
     }
 
@@ -48,6 +49,30 @@ public class Employee {
             }
         }
         return null;
+    }
+
+    protected void setId(int id) {
+        Employee.id = id;
+    }
+
+    protected void setUsername(String username) {
+        this.username = username;
+    }
+
+    protected void setPassword(String password) {
+        this.password = password;
+    }
+
+    protected static void setEmployees(ArrayList<Employee> employees) {
+        Employee.employees = employees;
+    }
+
+    protected static void setEmployeeMap(HashMap<Employee, Integer> employeeMap) {
+        Employee.employeeMap = employeeMap;
+    }
+
+    protected void setType(String type) {
+        this.type.add(type);
     }
 
 }

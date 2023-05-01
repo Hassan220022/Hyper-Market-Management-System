@@ -10,8 +10,7 @@ public class Marketier extends Employee {
     private static HashMap<String, Integer> markMap = new HashMap<>();
 
     public Marketier(String username, String password) {
-        super(username, password);
-        this.type = "Marketier";
+        super(username, password, "Marketier");
         marketieArrayList.add(this);
         markMap.put(username, getId());
     }

@@ -1,13 +1,14 @@
 package project;
+
 public class Order {
 
-    private int id;
+    protected static int id = 0;
     private int productId;
     private int quantity;
     private double totalPrice;
 
     public Order(int id, int productId, int quantity, double totalPrice) {
-        this.id = id;
+        id++;
         this.productId = productId;
         this.quantity = quantity;
         this.totalPrice = totalPrice;

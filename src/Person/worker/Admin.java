@@ -1,17 +1,14 @@
 package Person.worker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class Admin extends Employee {
 
-    private String type;
     private static ArrayList<Admin> admins = new ArrayList<Admin>();
     private static HashMap<String, Integer> adminMap = new HashMap<>();
 
     public Admin(String username, String password) {
-        super(username, password);
-        this.type = "Admin";
+        super(username, password, "Admin");
         admins.add(this);
         adminMap.put(username, getId());
     }
@@ -67,4 +64,41 @@ public class Admin extends Employee {
         }
         return null;
     }
+
+    public static Employee removeEmployee(int id) {
+        if (!employeeMap.containsValue(id)) {
+            EmployeeList.getEmployeeList()[id] = null;
+            return employeeMap.get(id);
+        }
+        return null;
+    }
+
+    // set unique id for a spacific employee
+    public static void setEmployeeId(Employee employee, int id) {
+        employee.setId(id);
+        employeeMap.replace(employee, id);
+    }
+
+    // set unique password for a spacific employee
+    public static void setEmployeePassword(Employee employee, String password) {
+        employee.setPassword(password);
+    }
+
+    // set unique type for a spacific employee
+    public static void setEmployeeType(Employee employee, String type) {
+        employee.setType(type);
+    }
+
+    // delete employee from the list and form the map and from the database
+    public static void deleteEmployee(Employee employee) {
+        employees.remove(employee);
+        employeeMap.remove(employee);
+    }
+
+    // add employee to the list and to the map and to the database
+    public static void addEmployee(Employee employee) {
+        employees.add(employee);
+        employeeMap.put(employee, employee.getId());
+    }
+    // update
 }

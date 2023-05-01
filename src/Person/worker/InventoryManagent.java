@@ -11,8 +11,7 @@ public class InventoryManagent extends Employee {
     private static HashMap<String, Integer> inventoryMap = new HashMap<>();
 
     public InventoryManagent(String username, String password) {
-        super(username, password);
-        this.type = "InventoryManagent";
+        super(username, password, "InventoryManagent");
         InventoryManagent.add(this);
         inventoryMap.put(username, getId());
     }
