@@ -12,6 +12,9 @@ import SQL.GlobalConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
+@SuppressWarnings({"unused", "unchecked"})
+
 public class User {
     private int id;
     private String username;
@@ -84,7 +87,6 @@ public class User {
         try {
             saveActionsToDatabase(null);
         } catch (JsonProcessingException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
