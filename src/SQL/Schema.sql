@@ -57,5 +57,7 @@ CREATE TABLE Users (
   id INT PRIMARY KEY,
   username VARCHAR(255),
   hashed_password VARCHAR(255),
-  email VARCHAR(255)
+  email VARCHAR(255),
+  actions TEXT
+
 );
