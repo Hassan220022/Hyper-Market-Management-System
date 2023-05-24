@@ -23,26 +23,31 @@ This system is designed to be installed in large markets to manage sales and pur
 - Users can update their information except ID.
 - Users can see all previous actions - optional-.
 
-## Installation
-1. Clone the repository to your local machine.
-2. Import the project into your preferred IDE.
-3. Run the project.
+## Tree
+```
+.
+├── README.md
+├── bin
+│   ├── App.class
+│   ├── SQL
+│   │   ├── GlobalConnection.class
+│   │   └── Schema.sql
+│   └── User
+│       ├── Password.class
+│       └── User.class
+├── lib
+│   ├── jackson-core-2.15.1.jar
+│   ├── jackson-databind-2.15.1.jar
+│   └── jbcrypt-0.4.jar
+├── src
+│   ├── App.java
+│   ├── SQL
+│   │   ├── GlobalConnection.java
+│   │   └── Schema.sql
+│   └── User
+│       ├── Password.java
+│       └── User.java
 
-## Usage
-1. Open the application.
-2. Log in with your credentials.
-3. Use the different modules to manage sales and purchases.
-
-## Contributing
-1. Fork the repository.
-2. Create a new branch.
-3. Make your changes and commit them.
-4. Push to your branch.
-5. Create a pull request.
-
-## Credits
-- John Doe
-- Jane Smith
-
+```
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
