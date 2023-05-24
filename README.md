@@ -1,18 +1,48 @@
-## Getting Started
+# Hyper Market Management System
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This system is designed to be installed in large markets to manage sales and purchases. The system has different types of users with different roles. The following modules are included:
 
-## Folder Structure
+## Administrative Module
+- Admin has a username and password and can alter them.
+- Admin manages employees (Add - set unique id, password, and type to - new employee, Delete, update, List all Employees, search).
 
-The workspace contains two folders by default, where:
+## Marketing Module
+- Marketing employees can make reports about products (make queries).
+- Marketing employees make special offers and send them to inventory management.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Inventory Management Module
+- Inventory employees (Add, Delete, Update, List, Search) Products.
+- The system must send a notification when the amount of product reduces at a special range - set by inventory employees - or when the expiry date of the product gets close.
+- Manage the Damages items and sales Return.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Sales Module
+- Seller can (search for a product, list all products, make and cancel an order).
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## User Module
+- All Users can log in and log out.
+- Users can update their information except ID.
+- Users can see all previous actions - optional-.
 
-## Dependency Management
+## Installation
+1. Clone the repository to your local machine.
+2. Import the project into your preferred IDE.
+3. Run the project.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Usage
+1. Open the application.
+2. Log in with your credentials.
+3. Use the different modules to manage sales and purchases.
+
+## Contributing
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push to your branch.
+5. Create a pull request.
+
+## Credits
+- John Doe
+- Jane Smith
+
+## License
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
