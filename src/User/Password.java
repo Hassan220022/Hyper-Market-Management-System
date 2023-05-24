@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import SQL.GlobalConnection;
+
 public class Password {
     private String hashedPassword;
 
@@ -21,7 +23,10 @@ public class Password {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public void saveToDatabase(Connection conn, int userId) throws SQLException {
+    public void saveToDatabase(int userId) throws SQLException {
+        // Use the global connection object
+        Connection conn = GlobalConnection.getConnection();
+    
         String query = "UPDATE users SET password = ? WHERE userId = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, hashedPassword);
