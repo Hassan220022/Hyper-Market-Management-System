@@ -1,4 +1,4 @@
-package User;
+package Empoyee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import SQL.GlobalConnection;
+import User.Password;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class User {
     private int id;
     private String username;
+    private String name; // TODO: add name to database
     private Password password;
     private String email;
     private List<String> actions;
@@ -42,8 +44,8 @@ public class User {
             stmt.executeUpdate();
 
             // Get the new user's id from the database
-            query = "SELECT userId FROM users WHERE username = ?";
-            stmt = conn.prepareStatement(query);
+            query = "SELECT userId FROM Users WHERE username = ?"; // User must be 'U'must be capitcal
+            stmt = conn.prepareStatement(query); // id
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -54,12 +56,27 @@ public class User {
 
     }
 
-    public boolean login(String password) {
+    public boolean isLoggedin(String password) {
         if (this.password.checkPassword(password)) {
-            addAction("Logged in");
+            addAction("Is Logged in");
             return true;
         }
         return false;
+    }
+
+    public void login(String password_user, String username_user) {
+        if (employeeExists(username_user)) {
+            try {
+                Connection conn = GlobalConnection.getConnection();
+                String query = "SELECT password FROM Users WHERE hashed_password = ?";
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setString(1, BCrypt.hashpw(password_user, BCrypt.gensalt()));
+                ResultSet rs = stmt.executeQuery();
+                addAction("Logged in");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void logout() {
@@ -71,7 +88,7 @@ public class User {
         this.username = username;
     }
 
-    public void updatePassword(String password) {
+    protected void updatePassword(String password) {
         this.password = new Password(password);
         try {
             this.password.saveToDatabase(id);
@@ -118,5 +135,33 @@ public class User {
         }
 
         return actions;
+    }
+
+    protected boolean employeeExists(String username) {
+        try {
+            Connection conn = GlobalConnection.getConnection();
+            String query = "SELECT username FROM Users WHERE username = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+//using getID_data form globalConnection class
+    protected boolean employeeExists(int ID) {
+        try {
+            if (ID == GlobalConnection.getID_data("Users")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 }
