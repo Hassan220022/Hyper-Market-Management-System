@@ -13,19 +13,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
+// CREATE TABLE Users (
+//   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
+//   username VARCHAR(255),
+//   hashed_password VARCHAR(255),
+//   class VARCHAR(255),
+//   actions JSON DEFAULT NULL CHECK (JSON_VALID(actions)) 
+
+// );
+
 @SuppressWarnings({"unused", "unchecked"})
 
 public class User {
     private int id;
     private String username;
     private Password password;
-    private String email;
     private List<String> actions;
 
-    public User(String username, String password, String email) {
+    public User(String username, String password) {
         this.username = username;
         this.password = new Password(password);
-        this.email = email;
         this.actions = new ArrayList<String>();
 
         addAction("Created user");
@@ -35,11 +42,10 @@ public class User {
         try {
             Connection conn = GlobalConnection.getConnection();
 
-            String query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+            String query = "INSERT INTO users (username, password) VALUES (?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             stmt.setString(2, password);
-            stmt.setString(3, email);
             stmt.executeUpdate();
 
             // Get the new user's id from the database
@@ -59,8 +65,11 @@ public class User {
         if (this.password.checkPassword(password)) {
             addAction("Logged in");
             return true;
+        } else {
+            addAction("Failed login attempt");
+            return false;
         }
-        return false;
+    
     }
 
     public void logout() {
@@ -70,6 +79,16 @@ public class User {
     public void updateUsername(String username) {
         addAction("Updated username to " + username);
         this.username = username;
+        try {
+            Connection conn = GlobalConnection.getConnection();
+            String query = "UPDATE users SET username = ? WHERE userId = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void updatePassword(String password) {
@@ -120,4 +139,61 @@ public class User {
 
         return actions;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public List<String> getActions() {
+        return actions;
+    }
+
+    public String getActionsJson() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(actions);
+    }
+
+    public void setActions(List<String> actions) {
+        this.actions = actions;
+    }
+
+    public void setActions(String actionsJson) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        this.actions = mapper.readValue(actionsJson, ArrayList.class);
+    }
+
+    public String toString() {
+        return "User: " + username + " Password: " + password;
+    }
+
+    public static void main(String[] args) throws SQLException, JsonProcessingException {
+        User user = new User("test", "test");
+        user.login("test");
+        user.updateUsername("test2");
+        user.updatePassword("test2");
+        user.logout();
+        System.out.println(user.getActions());
+        System.out.println(user.getActionsJson());
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password.getHashedPassword();
+    }
+
+    public void setPassword(String password) {
+        this.password.setPassword(password);
+    }
+
 }

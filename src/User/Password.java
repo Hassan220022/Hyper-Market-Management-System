@@ -19,7 +19,7 @@ public class Password {
         return BCrypt.checkpw(password, hashedPassword);
     }
 
-    private String hashPassword(String password) {
+    public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
@@ -32,5 +32,13 @@ public class Password {
         stmt.setString(1, hashedPassword);
         stmt.setInt(2, userId);
         stmt.executeUpdate();
+    }
+
+    public void setPassword(String password) {
+        this.hashedPassword = hashPassword(password);
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 }
