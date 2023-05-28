@@ -3,8 +3,9 @@ package Empoyee;
 import java.util.*;
 
 import Order.*;
+import User.User;
 
-class InventoryEmployee extends Employee {
+class InventoryEmployee extends User {
     private List<Product> products;
     private int notificationRange;
     // protected ArrayList<>//TODO: add array list for inventory employee

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import SQL.GlobalConnection;
+import User.User;
 
 @SuppressWarnings({ "unused" })
 
@@ -105,7 +106,7 @@ public class Admin extends User {
         }
     }
 
-    private boolean employeeExists(int employeeId) {
+    protected boolean employeeExists(int employeeId) {
         try {
             Connection conn = GlobalConnection.getConnection();
             String query = "SELECT id FROM Employees WHERE id = ?";
