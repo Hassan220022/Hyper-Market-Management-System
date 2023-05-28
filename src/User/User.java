@@ -22,13 +22,13 @@ public class User {
     protected String username;
     private String name; // TODO: add name to database
     private Password password;
-    private int type;
+    private UserType type;
     private List<String> actions;
 
     public User(String username, String password, String type) {
         this.username = username;
         this.password = new Password(password);
-        this.type = UserType.getUserTypeIndex(type);
+        this.type = UserType.getUserType(type);
         this.actions = new ArrayList<String>();
 
         addAction("Created user");
@@ -42,7 +42,7 @@ public class User {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             stmt.setString(2, password);
-            stmt.setString(3, type);
+            stmt.setString(3, type);// how mesh elmafrood yedi error ashan ashan ana bab3ato String mesh int
             stmt.executeUpdate();
 
             // Get the new user's id from the database

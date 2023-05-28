@@ -112,7 +112,7 @@ public class Admin extends User {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 int typeStr = rs.getInt("type");
-                return new User(username, password, UserType.getUserType(typeStr));
+                return new User(username, password, UserType.getUserTypeString(typeStr));
             } else {
                 return null;
             }
