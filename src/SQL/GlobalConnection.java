@@ -34,16 +34,17 @@ public class GlobalConnection {
     // debug only. remove later.
     public static void main(String[] args) throws SQLException {
         Connection conn = GlobalConnection.getConnection();
-        // System.out.println(conn);
+        System.out.println(conn);
 
         // add data to test
-        // String sql = "INSERT INTO Users (username, hashed_password) VALUES (?, ?)";
-        // PreparedStatement stmt = conn.prepareStatement(sql);
-        // stmt.setString(1, "omar");
-        // stmt.setString(2, "123");
-        // stmt.executeUpdate();
 
-        // // read some data to test
+        String sql = "INSERT INTO Users (username, hashed_password) VALUES (?, ?)";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, "Hassan");
+        stmt.setString(2, "123");
+        stmt.executeUpdate();
+
+        // read some data to test
 
         String sql2 = "SELECT * FROM Users";
         PreparedStatement stmt2 = conn.prepareStatement(sql2);
@@ -52,49 +53,6 @@ public class GlobalConnection {
         while (rs.next()) {
             System.out.println(rs.getString("username"));
             System.out.println(rs.getString("id"));
-
-        }
-        System.out.println("done");
-        System.out.println("\n\n");
-        System.out.println(GlobalConnection.getID("Users", "omar"));
-        System.out.println(GlobalConnection.getUsername("Users", 4));
-        // GlobalConnection.closeConnection();
-
-    }
-
-    public static int getID(String tableName, String Username) throws SQLException {
-        Connection conn = GlobalConnection.getConnection();
-        String query = "SELECT Id FROM " + tableName + " WHERE username = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setString(1, Username);
-        ResultSet rs = stmt.executeQuery();
-        try {
-            if (rs.next()) {
-                return rs.getInt("Id");
-            } else {
-                return -1;
-            }
-        } finally {
-            rs.close();
-            stmt.close();
-        }
-    }
-
-    public static String getUsername(String tableName, int id) throws SQLException {
-        Connection conn = GlobalConnection.getConnection();
-        String query = "SELECT username FROM " + tableName + " WHERE id = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, id);
-        ResultSet rs = stmt.executeQuery();
-        try {
-            if (rs.next()) {
-                return rs.getString("username");
-            } else {
-                return null;
-            }
-        } finally {
-            rs.close();
-            stmt.close();
         }
     }
 }

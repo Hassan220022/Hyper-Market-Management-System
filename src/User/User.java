@@ -22,13 +22,13 @@ public class User {
     protected String username;
     private String name; // TODO: add name to database
     private Password password;
-    private String type;
+    private int type;
     private List<String> actions;
 
     public User(String username, String password, String type) {
         this.username = username;
         this.password = new Password(password);
-        this.type = type;
+        this.type = UserType.getUserTypeIndex(type);
         this.actions = new ArrayList<String>();
 
         addAction("Created user");
@@ -73,7 +73,7 @@ public class User {
         addAction("Logged out");
     }
 
-    public void updateUsername(String username) {
+    protected void updateUsername(String username) {
         addAction("Updated username to " + username);
         this.username = username;
         try {
@@ -88,7 +88,7 @@ public class User {
         }
     }
 
-    public void updatePassword(String password) {
+    protected void updatePassword(String password) {
         this.password = new Password(password);
         try {
             this.password.saveToDatabase(id);
@@ -137,9 +137,111 @@ public class User {
         return actions;
     }
 
+    public int getID() throws SQLException {
+        Connection conn = GlobalConnection.getConnection();
+        String query = "SELECT Id FROM Users WHERE username = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, this.username);
+        ResultSet rs = stmt.executeQuery();
+        try {
+            if (rs.next()) {
+                return rs.getInt("Id");
+            } else {
+                return -1;
+            }
+        } finally {
+            rs.close();
+            stmt.close();
+        }
+    }
+
+    protected String getUsername() throws SQLException {
+        Connection conn = GlobalConnection.getConnection();
+        String query = "SELECT username FROM Users WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, this.id);
+        ResultSet rs = stmt.executeQuery();
+        try {
+            if (rs.next()) {
+                return rs.getString("username");
+            } else {
+                return null;
+            }
+        } finally {
+            rs.close();
+            stmt.close();
+        }
+    }
+
+    protected int getType() throws SQLException {
+        Connection conn = GlobalConnection.getConnection();
+        String query = "SELECT type FROM Users WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, this.id);
+        ResultSet rs = stmt.executeQuery();
+        try {
+            if (rs.next()) {
+                String typeStr = rs.getString("type");
+                UserType type = UserType.valueOf(typeStr);
+                return type.ordinal();
+            } else {
+                throw new IllegalArgumentException("Invalid user ID: " + id);
+            }
+        } finally {
+            rs.close();
+            stmt.close();
+        }
+    }
+
+    protected void setID(int newID) throws SQLException {
+        Connection conn = GlobalConnection.getConnection();
+        String query = "UPDATE users SET id = ? WHERE id = ?";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, newID);
+            stmt.setInt(2, this.id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        this.id = newID;
+    }
+
+    public void setUsername(String newUsername) throws SQLException {
+        Connection conn = GlobalConnection.getConnection();
+        String query = "UPDATE users SET username = ? WHERE id = ?";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, newUsername);
+            stmt.setInt(2, this.id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        this.username = newUsername;
+    }
+
     protected boolean employeeExists(String username) {
         try {
-            if (GlobalConnection.getID("Users", username) != -1) {
+            if (getID() != -1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -150,7 +252,7 @@ public class User {
 
     protected boolean employeeExists(int ID) {
         try {
-            if (GlobalConnection.getUsername("Users", ID) != null) {
+            if (getUsername() != null) {
                 return true;
             }
         } catch (SQLException e) {
@@ -159,12 +261,12 @@ public class User {
         return false;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
+    protected User getUser(int ID) {
+        if (employeeExists(ID)) {
+            return this;
+        } else {
+            return null;
+        }
     }
 
     public List<String> getActions() {
@@ -189,19 +291,11 @@ public class User {
         return "User: " + username + " Password: " + password;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password.getHashedPassword();
     }
 
-    public void setPassword(String password) {
+    protected void setPassword(String password) {
         this.password.setPassword(password);
     }
 
@@ -214,4 +308,5 @@ public class User {
         System.out.println(user.getActions());
         System.out.println(user.getActionsJson());
     }
+
 }
