@@ -2,6 +2,7 @@ package User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -15,7 +16,17 @@ public class Password {
         this.hashedPassword = hashPassword(password);
     }
 
-    public boolean checkPassword(String password) {
+    public Password(User user) throws SQLException {
+        Connection conn = GlobalConnection.getConnection();
+        String query = "SELECT password FROM users WHERE userId = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, user.getUsername());
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        this.hashedPassword = rs.getString("hashed_password");
+    }
+
+    public boolean checkPassword(String password) throws SQLException {
         return BCrypt.checkpw(password, hashedPassword);
     }
 

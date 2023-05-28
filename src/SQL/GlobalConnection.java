@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GlobalConnection {
-    private static Connection conn;
+    public static Connection conn;
 
     public static Connection getConnection() throws SQLException {
         if (conn == null) {
