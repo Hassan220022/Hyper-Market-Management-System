@@ -3,7 +3,7 @@ package User;
 public enum UserType {
     admin, sales, inventory, marketing;
 
-    public static String getUserType(int index) {
+    public static String getUserTypeString(int index) {
         UserType[] types = UserType.values();
         if (index >= 0 && index < types.length) {
             return types[index].name();
@@ -12,13 +12,15 @@ public enum UserType {
         }
     }
 
-    public static int getUserTypeIndex(String type) {
-        UserType[] types = UserType.values();
-        for (int i = 0; i < types.length; i++) {
-            if (types[i].name().equalsIgnoreCase(type)) {
-                return i;
-            }
+    public static UserType getUserType(String type) {
+        try {
+            return UserType.valueOf(type);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid user type: " + type);
         }
-        throw new IllegalArgumentException("Invalid user type: " + type);
+    }
+
+    public static String getUserType(UserType type) {
+        return type.name();
     }
 }
