@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
+@SuppressWarnings("unused")
+
 public class GlobalConnection {
     private static Connection conn;
 
@@ -95,23 +97,4 @@ public class GlobalConnection {
             stmt.close();
         }
     }
-
-    protected static String getHashedPassword(String tableName, int id) throws SQLException {
-        Connection conn = GlobalConnection.getConnection();
-        String query = "SELECT password FROM " + tableName + " WHERE id = ?";
-        PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setInt(1, id);
-        ResultSet rs = stmt.executeQuery();
-        try {
-            if (rs.next()) {
-                return rs.getString("password");
-            } else {
-                return null;
-            }
-        } finally {
-            rs.close();
-            stmt.close();
-        }
-    }
-
 }

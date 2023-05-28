@@ -1,6 +1,6 @@
 package Order;
 
-class SalesReturn {
+public class SalesReturn {
     private int productId;
     private int quantity;
     private String reason;

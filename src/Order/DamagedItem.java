@@ -1,6 +1,6 @@
 package Order;
 
-class DamagedItem {
+public class DamagedItem {
     private int productId;
     private int quantity;
     private String reason;

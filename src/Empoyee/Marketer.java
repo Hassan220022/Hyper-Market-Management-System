@@ -3,10 +3,11 @@ package Empoyee;
 import java.util.*;
 
 import Order.*;
+import User.User;
 
-class Marketer extends Employee {
-    public Marketer(String name, String username, String password) {
-        super("Marketer", name, username, password);
+class Marketer extends User {
+    public Marketer(String username, String password) {
+        super(username, password, "marketer");
     }
 
     public void makeReport(Product product) {

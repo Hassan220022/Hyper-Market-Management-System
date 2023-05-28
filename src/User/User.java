@@ -19,16 +19,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class User {
     private int id;
-    private String username;
+    protected String username;
     private String name; // TODO: add name to database
     private Password password;
-    private String email;
+    private String type;
     private List<String> actions;
 
-    public User(String username, String password, String email) {
+    public User(String username, String password, String type) {
         this.username = username;
         this.password = new Password(password);
-        this.email = email;
+        this.type = type;
         this.actions = new ArrayList<String>();
 
         addAction("Created user");
@@ -38,11 +38,11 @@ public class User {
         try {
             Connection conn = GlobalConnection.getConnection();
 
-            String query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+            String query = "INSERT INTO users (username, password, class) VALUES (?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             stmt.setString(2, password);
-            stmt.setString(3, email);
+            stmt.setString(3, type);
             stmt.executeUpdate();
 
             // Get the new user's id from the database
@@ -58,27 +58,15 @@ public class User {
 
     }
 
-    public boolean isLoggedin(String password) {
+    public boolean login(String password) {
         if (this.password.checkPassword(password)) {
-            addAction("Is Logged in");
+            addAction("Logged in");
             return true;
+        } else {
+            addAction("Failed login attempt");
+            return false;
         }
-        return false;
-    }
 
-    public void login(String password_user, String username_user) {
-        if (employeeExists(username_user)) {
-            try {
-                Connection conn = GlobalConnection.getConnection();
-                String query = "SELECT password FROM Users WHERE hashed_password = ?";
-                PreparedStatement stmt = conn.prepareStatement(query);
-                stmt.setString(1, BCrypt.hashpw(password_user, BCrypt.gensalt()));
-                ResultSet rs = stmt.executeQuery();
-                addAction("Logged in");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void logout() {
@@ -88,9 +76,19 @@ public class User {
     public void updateUsername(String username) {
         addAction("Updated username to " + username);
         this.username = username;
+        try {
+            Connection conn = GlobalConnection.getConnection();
+            String query = "UPDATE users SET username = ? WHERE userId = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
-    protected void updatePassword(String password) {
+    public void updatePassword(String password) {
         this.password = new Password(password);
         try {
             this.password.saveToDatabase(id);
@@ -150,7 +148,6 @@ public class User {
         return false;
     }
 
-    // using getID_data form globalConnection class
     protected boolean employeeExists(int ID) {
         try {
             if (GlobalConnection.getUsername("Users", ID) != null) {
@@ -160,5 +157,61 @@ public class User {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public List<String> getActions() {
+        return actions;
+    }
+
+    public String getActionsJson() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(actions);
+    }
+
+    public void setActions(List<String> actions) {
+        this.actions = actions;
+    }
+
+    public void setActions(String actionsJson) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        this.actions = mapper.readValue(actionsJson, ArrayList.class);
+    }
+
+    public String toString() {
+        return "User: " + username + " Password: " + password;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password.getHashedPassword();
+    }
+
+    public void setPassword(String password) {
+        this.password.setPassword(password);
+    }
+
+    public static void main(String[] args) throws SQLException, JsonProcessingException {
+        User user = new User("test", "test", "test");
+        user.login("test");
+        user.updateUsername("test2");
+        user.updatePassword("test2");
+        user.logout();
+        System.out.println(user.getActions());
+        System.out.println(user.getActionsJson());
     }
 }

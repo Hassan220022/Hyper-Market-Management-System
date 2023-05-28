@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Order.*;
+import User.User;
 
-class Sales extends Employee {
+class Sales extends User {
 
     private List<Product> products;
 
     public Sales(String name, String username, String password) {
-        super("Sales", name, username, password);
+        super(username, password, "Sales");
         this.products = new ArrayList<>();
     }
 
@@ -85,5 +86,13 @@ class Sales extends Employee {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public double getTotalPrice() { // TODO: implement this
+        return 0;
+    }
+
+    public int getQuantity() { // TODO: implement this
+        return 0;
     }
 }

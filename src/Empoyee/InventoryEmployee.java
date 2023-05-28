@@ -8,10 +8,9 @@ import User.User;
 class InventoryEmployee extends User {
     private List<Product> products;
     private int notificationRange;
-    // protected ArrayList<>//TODO: add array list for inventory employee
 
     public InventoryEmployee(String name, String username, String password) {
-        super("InventoryManager", name, username, password);
+        super(username, password, "inventory");
         this.products = new ArrayList<>();
         this.notificationRange = 0;
     }
