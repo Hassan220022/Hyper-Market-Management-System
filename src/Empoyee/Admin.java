@@ -11,6 +11,7 @@ import javax.swing.UIDefaults;
 
 import SQL.GlobalConnection;
 import User.User;
+import User.UserType;
 
 @SuppressWarnings({ "unused" })
 
@@ -89,12 +90,35 @@ public class Admin extends User {
         return employees;
     }
 
+    // methode 1
     public User searchEmployee(int employeeId) {
         User user = getUser(employeeId);
         if (user != null) {
             return user;
         } else {
             throw new IllegalArgumentException("Invalid user ID: " + employeeId);
+        }
+    }
+
+    // methode 2
+    public User searchEmployee_methode2(int id) throws SQLException {
+        Connection conn = GlobalConnection.getConnection();
+        String query = "SELECT * FROM Users WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        try {
+            if (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int typeStr = rs.getInt("type");
+                return new User(username, password, UserType.getUserType(typeStr));
+            } else {
+                return null;
+            }
+        } finally {
+            rs.close();
+            stmt.close();
         }
     }
 }

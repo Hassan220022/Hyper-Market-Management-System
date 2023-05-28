@@ -3,10 +3,10 @@ package User;
 public enum UserType {
     admin, sales, inventory, marketing;
 
-    public static UserType getUserType(int index) {
+    public static String getUserType(int index) {
         UserType[] types = UserType.values();
         if (index >= 0 && index < types.length) {
-            return types[index];
+            return types[index].name();
         } else {
             throw new IllegalArgumentException("Invalid user type index");
         }
