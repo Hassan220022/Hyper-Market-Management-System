@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.UIDefaults;
+
 import SQL.GlobalConnection;
 import User.User;
 
@@ -14,109 +16,85 @@ import User.User;
 
 public class Admin extends User {
 
-    public Admin(String username, String password, String email) {
-        super(username, password, email);
+    public Admin(String username, String password) {
+        super(username, password, "admin");
     }
 
-    public void updateUsernameForEmployee(int employeeId, String newUsername) {
-        // Check if the employee exists
-        if (employeeExists(employeeId)) {
-            // Update the employee's username
-            try {
-                Connection conn = GlobalConnection.getConnection();
-                String query = "UPDATE Employees SET username = ? WHERE id = ?";
-                PreparedStatement stmt = conn.prepareStatement(query);
-                stmt.setString(1, newUsername);
-                stmt.setInt(2, employeeId);
-                stmt.executeUpdate();
-
-                System.out.println("Employee username updated successfully.");
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public void updateUsernameForEmployee(User user, String newUsername) throws SQLException {
+        // check if employee exsists
+        try {
+            if (employeeExists(user.getID())) {
+                user.setUsername(newUsername);
             }
-        } else {
-            System.out.println("Employee with ID " + employeeId + " does not exist.");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public void deleteEmployee(int employeeId) {
+    public boolean deleteEmployee(User user) throws SQLException {
         // Check if the employee exists
-        if (employeeExists(employeeId)) {
+        if (employeeExists(user.getID())) {
             // Delete the employee from the database
             try {
                 Connection conn = GlobalConnection.getConnection();
-                String query = "DELETE FROM Employees WHERE id = ?";
+                String query = "DELETE FROM users WHERE id = ?";
                 PreparedStatement stmt = conn.prepareStatement(query);
-                stmt.setInt(1, employeeId);
+                stmt.setInt(1, user.getID());
                 stmt.executeUpdate();
-
-                System.out.println("Employee deleted successfully.");
+                return true;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else {
-            System.out.println("Employee with ID " + employeeId + " does not exist.");
         }
+        return false;
     }
 
-    public void listAllEmployees() {
+    public boolean addEmployee(String Username, String password, String type) throws SQLException {
         try {
-            Connection conn = GlobalConnection.getConnection();
-            String query = "SELECT id, username, type FROM Employees";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-
-            System.out.println("Employee List:");
-            System.out.println("ID\t\tUsername\t\tType");
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String username = rs.getString("username");
-                String type = rs.getString("type");
-                System.out.println(id + "\t\t" + username + "\t\t" + type);
+            User user = new User(Username, password, type);
+            while (!employeeExists(user.getID())) {
+                user = new User(Username, password, type);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void searchEmployee(int employeeId) {
-        // Check if the employee exists
-        if (employeeExists(employeeId)) {
-            // Retrieve and display the employee's details
-            try {
-                Connection conn = GlobalConnection.getConnection();
-                String query = "SELECT id, username, type FROM Employees WHERE id = ?";
-                PreparedStatement stmt = conn.prepareStatement(query);
-                stmt.setInt(1, employeeId);
-                ResultSet rs = stmt.executeQuery();
-
-                System.out.println("Employee Details:");
-                System.out.println("ID\t\tUsername\t\tType");
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String username = rs.getString("username");
-                    String type = rs.getString("type");
-                    System.out.println(id + "\t\t" + username + "\t\t" + type);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Employee with ID " + employeeId + " does not exist.");
-        }
-    }
-
-    protected boolean employeeExists(int employeeId) {
-        try {
-            Connection conn = GlobalConnection.getConnection();
-            String query = "SELECT id FROM Employees WHERE id = ?";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, employeeId);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    // isn't finished
+    public List<User> listAllEmployees() {
+        List<User> employees = new ArrayList<User>();
+
+        try {
+            // retrieve all employees from the database
+            Connection conn = GlobalConnection.getConnection();
+            String query = "SELECT * FROM Users WHERE ";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            // create User objects for each employee and add them to the list
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String type = rs.getString("type");
+                User employee = new User(username, password, type);// TODO: store in user password with no encryption
+                employees.add(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return employees;
+    }
+
+    public User searchEmployee(int employeeId) {
+        User user = getUser(employeeId);
+        if (user != null) {
+            return user;
+        } else {
+            throw new IllegalArgumentException("Invalid user ID: " + employeeId);
+        }
     }
 }
