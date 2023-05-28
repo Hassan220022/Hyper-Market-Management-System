@@ -1,18 +1,29 @@
-## Getting Started
+# Hyper Market Management System
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This system is designed to be installed in large markets to manage sales and purchases. The system has different types of users with different roles. The following modules are included:
 
-## Folder Structure
+## Administrative Module
 
-The workspace contains two folders by default, where:
+- Admin has a username and password and can alter them.
+- Admin manages employees (Add - set unique id, password, and type to - new employee, Delete, update, List all Employees, search).
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Marketing Module
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+- Marketing employees can make reports about products (make queries).
+- Marketing employees make special offers and send them to inventory management.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Inventory Management Module
 
-## Dependency Management
+- Inventory employees (Add, Delete, Update, List, Search) Products.
+- The system must send a notification when the amount of product reduces at a special range - set by inventory employees - or when the expiry date of the product gets close.
+- Manage the Damages items and sales Return.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Sales Module
+
+- Seller can (search for a product, list all products, make and cancel an order).
+
+## User Module
+
+- All Users can log in and log out.
+- Users can update their information except ID.
+- Users can see all previous actions - optional-.
