@@ -60,11 +60,11 @@ public class GlobalConnection {
 
     }
 
-    protected static int getID(String tableName, String username) throws SQLException {
+    public static int getID(String tableName, String Username) throws SQLException {
         Connection conn = GlobalConnection.getConnection();
         String query = "SELECT Id FROM " + tableName + " WHERE username = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setString(1, username);
+        stmt.setString(1, Username);
         ResultSet rs = stmt.executeQuery();
         try {
             if (rs.next()) {
@@ -78,7 +78,7 @@ public class GlobalConnection {
         }
     }
 
-    protected static String getUsername(String tableName, int id) throws SQLException {
+    public static String getUsername(String tableName, int id) throws SQLException {
         Connection conn = GlobalConnection.getConnection();
         String query = "SELECT username FROM " + tableName + " WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(query);

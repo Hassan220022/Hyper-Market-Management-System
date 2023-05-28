@@ -141,27 +141,22 @@ public class User {
 
     protected boolean employeeExists(String username) {
         try {
-            Connection conn = GlobalConnection.getConnection();
-            String query = "SELECT username FROM Users WHERE username = ?";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next();
+            if (GlobalConnection.getID("Users", username) != -1) {
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-//using getID_data form globalConnection class
+
+    // using getID_data form globalConnection class
     protected boolean employeeExists(int ID) {
         try {
-            if (ID == GlobalConnection.getID_data("Users")) {
+            if (GlobalConnection.getUsername("Users", ID) != null) {
                 return true;
-            } else {
-                return false;
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return false;
