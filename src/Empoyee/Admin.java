@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.UIDefaults;
 
 import SQL.GlobalConnection;
+import User.Password;
 import User.User;
 import User.UserType;
 
@@ -31,7 +32,21 @@ public class Admin extends User {
             e.printStackTrace();
         }
     }
+    // public boolean updatePassword(User user, String newPassword) throws
+    // SQLException {--------->>>>>>eb2a e3malha ashan mesh 3aref am3malha ezay
 
+    // // check if employee exsists
+    // try {
+    // if (employeeExists(user.getID())) {
+    // setPassword(newPassword);
+    // saveToDatabase(user.getID());
+    // return true;
+    // }
+    // } catch (SQLException e) {
+    // e.printStackTrace();
+    // }
+    // return false;
+    // }
     public boolean deleteEmployee(User user) throws SQLException {
         // Check if the employee exists
         if (employeeExists(user.getID())) {
@@ -80,7 +95,7 @@ public class Admin extends User {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String type = rs.getString("type");
-                User employee = new User(username, password, type);// TODO: store in user password with no encryption
+                User employee = new User(username, password, type);// check if this is correct
                 employees.add(employee);
             }
         } catch (SQLException e) {

@@ -26,7 +26,7 @@ public class Password {
     public void saveToDatabase(int userId) throws SQLException {
         // Use the global connection object
         Connection conn = GlobalConnection.getConnection();
-    
+
         String query = "UPDATE users SET password = ? WHERE userId = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, hashedPassword);

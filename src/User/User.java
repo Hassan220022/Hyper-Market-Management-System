@@ -21,7 +21,7 @@ public class User {
     private int id;
     protected String username;
     private String name; // TODO: add name to database
-    private Password password;
+    public Password password;
     private UserType type;
     private List<String> actions;
 
