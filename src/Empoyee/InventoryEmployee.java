@@ -38,7 +38,6 @@ class InventoryEmployee extends User {
             stmt.setInt(3, product.getQuantity());
             stmt.setBigDecimal(4, product.getPrice());
             stmt.setDate(5, new java.sql.Date(product.getExpiryDate().getTime()));
-            
 
             // Execute the SQL statement to insert the new row into the table
             stmt.executeUpdate();
