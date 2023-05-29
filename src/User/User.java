@@ -46,7 +46,7 @@ public class User {
             stmt.executeUpdate();
 
             // Get the new user's id from the database
-            query = "SELECT userId FROM Users WHERE username = ?"; // User must be 'U'must be capitcal
+            query = "SELECT Id FROM Users WHERE username = ?"; // User must be 'U'must be capitcal
             stmt = conn.prepareStatement(query); // id
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
