@@ -1,16 +1,16 @@
 package Order;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import SQL.GlobalConnection;
-import User.UserType;
 
 public class Product {
     private int id;
@@ -293,4 +293,121 @@ public class Product {
         this.expiryDate = expiryDate;
     }
 
+    public static List<Product> searchProduct(String keyword) throws SQLException {
+        List<Product> searchResults = new ArrayList<>();
+        try {
+            // Open a connection to the database
+            Connection conn = GlobalConnection.getConnection();
+
+            // Prepare a SQL statement to select rows from the Inventory_Products table that
+            // contain the search keyword in their name or description
+            String sql = "SELECT * FROM Inventory_Products WHERE name LIKE ? OR description LIKE ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            // Set the values of the parameters in the SQL statement
+            String searchPattern = "%" + keyword + "%";
+            stmt.setString(1, searchPattern);
+            stmt.setString(2, searchPattern);
+
+            // Execute the SQL statement to select the rows from the table
+            ResultSet rs = stmt.executeQuery();
+
+            // Iterate over the result set and create a new Product object for each row
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                int quantity = rs.getInt("quantity");
+                double price = rs.getDouble("price");
+                Date expiryDate = rs.getDate("expiry_date");
+                Product product = new Product(id, name, description, quantity, price, expiryDate);
+                searchResults.add(product);
+            }
+
+            // Close the result set, statement, and connection
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            // Handle any errors that occur during the database operation
+            e.printStackTrace();
+            throw e;
+        }
+        return searchResults;
+    }
+
+    public static Product findProductById(int productId) throws SQLException {
+        Product product = null;
+        try {
+            // Open a connection to the database
+            Connection conn = GlobalConnection.getConnection();
+
+            // Prepare a SQL statement to select a row from the Inventory_Products table by
+            // ID
+            String sql = "SELECT * FROM Inventory_Products WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            // Set the value of the parameter in the SQL statement
+            stmt.setInt(1, productId);
+
+            // Execute the SQL statement to select the row from the table
+            ResultSet rs = stmt.executeQuery();
+
+            // If a row was found, create a new Product object with the row data
+            if (rs.next()) {
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                int quantity = rs.getInt("quantity");
+                double price = rs.getDouble("price");
+                Date expiryDate = rs.getDate("expiry_date");
+                product = new Product(productId, name, description, quantity, price, expiryDate);
+            }
+
+            // Close the result set, statement, and connection
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            // Handle any errors that occur during the database operation
+            e.printStackTrace();
+            throw e;
+        }
+        return product;
+    }
+
+    public static List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+        try {
+            // Open a connection to the database
+            Connection conn = GlobalConnection.getConnection();
+
+            // Prepare a SQL statement to select all rows from the Inventory_Products table
+            String sql = "SELECT * FROM Inventory_Products";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            // Execute the SQL statement to select all rows from the table
+            ResultSet rs = stmt.executeQuery();
+
+            // Iterate over the result set and create a new Product object for each row
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                int quantity = rs.getInt("quantity");
+                double price = rs.getDouble("price");
+                Date expiryDate = rs.getDate("expiry_date");
+                Product product = new Product(id, name, description, quantity, price, expiryDate);
+                products.add(product);
+            }
+
+            // Close the result set, statement, and connection
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            // Handle any errors that occur during the database operation
+            e.printStackTrace();
+        }
+        return products;
+    }
 }

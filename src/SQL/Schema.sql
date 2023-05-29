@@ -18,8 +18,8 @@ CREATE TABLE Inventory_Products (
   description TEXT, -- haya mesh description text el mafrood malhash lazma sah wala 2a  
   quantity INT,
   price DECIMAL(10, 2),
-  expiry_date DATE -- make it String and I will handle it in the code 
-                  ---  ashan teb2a ashal
+  expiry_date DATE ,-- make it String and I will handle it in the code ashan teb2a ashal
+  Damaged INT
 );
 
 
