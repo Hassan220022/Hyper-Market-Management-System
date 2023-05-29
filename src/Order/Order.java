@@ -1,5 +1,6 @@
 package Order;
 
+import java.sql.SQLException;
 import java.util.*;
 
 class Order {
@@ -15,13 +16,13 @@ class Order {
         this.totalPrice = 0.0;
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(Product product) throws SQLException {
         products.add(product);
         totalPrice += product.getPrice();
         System.out.println("Product added to the order: " + product.getName());
     }
 
-    public void removeProduct(Product product) {
+    public void removeProduct(Product product) throws SQLException {
         if (products.remove(product)) {
             totalPrice -= product.getPrice();
             System.out.println("Product removed from the order: " + product.getName());

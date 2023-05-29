@@ -1,5 +1,7 @@
 package Empoyee;
 
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ class Sales extends User {
         return username;
     }
 
-    public void searchProduct(String keyword) {
+    public void searchProduct(String keyword) throws SQLException {
         List<Product> searchResults = new ArrayList<>();
         for (Product product : products) {
             if (product.getName().contains(keyword)) {
@@ -44,29 +46,29 @@ class Sales extends User {
         }
     }
 
-    public void makeOrder(Product product, int quantity) {
+    public void makeOrder(Product product, int quantity) throws SQLException {
         // Logic to create an order for the given product and quantity
         // You can add your implementation here
         System.out.println("Order placed: " + quantity + " " + product.getName());
     }
 
-    public void cancelOrder(Product product) {
+    public void cancelOrder(Product product) throws SQLException {
         // Logic to cancel an order for the given product
         // You can add your implementation here
         System.out.println("Order canceled: " + product.getName());
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(Product product) throws SQLException {
         products.add(product);
         System.out.println("Product added: " + product.getName());
     }
 
-    public void deleteProduct(Product product) {
+    public void deleteProduct(Product product) throws SQLException {
         products.remove(product);
         System.out.println("Product deleted: " + product.getName());
     }
 
-    public void updateProduct(Product product) {
+    public void updateProduct(Product product) throws SQLException, ParseException {
         for (Product p : products) {
             if (p.getId() == product.getId()) {
                 p.setName(product.getName());

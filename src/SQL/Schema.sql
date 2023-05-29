@@ -15,10 +15,11 @@ CREATE TABLE Users (
 CREATE TABLE Inventory_Products (
   id INT PRIMARY KEY,
   name VARCHAR(255),
-  description TEXT,
+  description TEXT, -- haya mesh description text el mafrood malhash lazma sah wala 2a  
   quantity INT,
   price DECIMAL(10, 2),
-  expiry_date DATE
+  expiry_date DATE -- make it String and I will handle it in the code 
+                  ---  ashan teb2a ashal
 );
 
 

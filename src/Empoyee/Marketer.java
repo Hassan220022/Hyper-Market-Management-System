@@ -1,5 +1,6 @@
 package Empoyee;
 
+import java.sql.SQLException;
 import java.util.*;
 
 import Order.*;
@@ -10,7 +11,7 @@ class Marketer extends User {
         super(username, password, "marketer");
     }
 
-    public void makeReport(Product product) {
+    public void makeReport(Product product) throws SQLException {
         // Generate report for the product
         System.out.println("Generating report for product: " + product.getName());
 
