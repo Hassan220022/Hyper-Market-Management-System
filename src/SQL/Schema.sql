@@ -41,15 +41,14 @@ CREATE TABLE Marketing_Offers (
   FOREIGN KEY (product_id) REFERENCES Inventory_Products(id)
 );
 
-
-
 CREATE TABLE Sales_Orders (
   id INT PRIMARY KEY,
-  user_id INT,
+  user_id INT,   --user_id --> customer_id
   product_id INT,
-  quantity INT,
-  order_date DATETIME,
-  status VARCHAR(255),
+  quantity INT,  --> of each product
+  price DECIMAL(10, 2), -- add price --> each order have total price of all products which is price
+  order_date DATETIME, -- maloosh lazma 
+  status VARCHAR(255), -- status --> live, cancelled
   FOREIGN KEY (user_id) REFERENCES Users(id),
   FOREIGN KEY (product_id) REFERENCES Inventory_Products(id)
 );

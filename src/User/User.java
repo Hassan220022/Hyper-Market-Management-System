@@ -155,7 +155,7 @@ public class User {
         }
     }
 
-    protected String getUsername() throws SQLException {
+    public String getUsername() throws SQLException {
         Connection conn = GlobalConnection.getConnection();
         String query = "SELECT username FROM Users WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
@@ -173,7 +173,7 @@ public class User {
         }
     }
 
-    protected int getType() throws SQLException {
+    public int getType() throws SQLException {
         Connection conn = GlobalConnection.getConnection();
         String query = "SELECT type FROM Users WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(query);
@@ -186,6 +186,27 @@ public class User {
                 return type.ordinal();
             } else {
                 throw new IllegalArgumentException("Invalid user ID: " + id);
+            }
+        } finally {
+            rs.close();
+            stmt.close();
+        }
+    }
+
+    public User searchEmployee(int id) throws SQLException {
+        Connection conn = GlobalConnection.getConnection();
+        String query = "SELECT * FROM Users WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        try {
+            if (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int typeStr = rs.getInt("type");
+                return new User(username, password, UserType.getUserTypeString(typeStr));
+            } else {
+                return null;
             }
         } finally {
             rs.close();
@@ -295,7 +316,7 @@ public class User {
         return password.getHashedPassword();
     }
 
-    protected void setPassword(String password) {
+    public void setPassword(String password) {
         this.password.setPassword(password);
     }
 

@@ -1,10 +1,7 @@
 package Order;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 
 public class Date {
     private int day;
@@ -22,6 +19,13 @@ public class Date {
         this.day = Integer.parseInt(dateArray[0]);
         this.month = Integer.parseInt(dateArray[1]);
         this.year = Integer.parseInt(dateArray[2]);
+    }
+
+    public Date() {
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter current = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String currentDate = myDateObj.format(current);
+        new Date(currentDate);
     }
 
     public int getDay() {
@@ -69,5 +73,9 @@ public class Date {
             return true;
         }
         return false;
+    }
+
+    protected void remove(Date date) {
+        date.remove(date);
     }
 }

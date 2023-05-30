@@ -24,6 +24,14 @@ class InventoryEmployee extends User {
         this.notificationRange = 5;
     }
 
+    public void SetUsername(String username) throws SQLException {
+        setUsername(username);
+    }
+
+    public void SetPassword(String password) throws SQLException {
+        setPassword(password);
+    }
+
     public void addProductToDatabase(Product product) throws ParseException {
         try {
             // Open a connection to the database
@@ -100,7 +108,7 @@ class InventoryEmployee extends User {
         }
     }
 
-    public List<Product> useGetAllProduct() {
+    public List<Product> GetAllProduct() {
         return Product.getAllProducts();
     }
 
