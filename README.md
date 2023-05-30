@@ -16,14 +16,18 @@ This system is designed to be installed in large markets to manage sales and pur
 
 - [x] Inventory employees (Add, Delete, Update, List, Search) Products.
 - [ ] The system must send a notification when the amount of product reduces at a special range - set by inventory employees - or when the expiry date of the product gets close.
-- [] Manage the Damages items and sales Return.
+- [ ] Manage the Damages items and sales Return.
 
 ## Sales Module
 
-- [ ] Seller can (search for a product, list all products, make and cancel an order).
+- [x] Seller can (search for a product, list all products, make and cancel an order).
+
+- ### Class order
+
+  - [ ] Methode for database need's to be checked and fixed ashan ana mesh 3aref.
 
 ## User Module
 
 - [x] All Users can log in and log out.
 - [x] Users can update their information except ID.
-- [x] Users can see all previous actions - optional-.
+- [ ] Users can see all previous actions - optional-.
