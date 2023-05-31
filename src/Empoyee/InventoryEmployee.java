@@ -8,13 +8,15 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 
+import Empoyee.Marketing.MarketingOffer;
+
 import java.util.*;
 
 import Order.*;
 import SQL.GlobalConnection;
 import User.User;
 
-class InventoryEmployee extends User {
+public class InventoryEmployee extends User {
     private List<Product> products;
     private int notificationRange;
 
@@ -112,6 +114,10 @@ class InventoryEmployee extends User {
         return Product.getAllProducts();
     }
 
+    public void setPrice(double newPrice, Product product) throws SQLException {
+        product.setPrice(newPrice);
+    }
+
     public Product findProductById(int productId) throws SQLException {
         return Product.findProductById(productId);
     }
@@ -135,4 +141,51 @@ class InventoryEmployee extends User {
         // Logic to manage sales returns
         System.out.println("Managing sales return: " + salesReturn);
     }
+
+    // TODO:
+    public void setProductNotificationThreshold(int productId, int threshold) {
+        // Set the notification threshold for a product
+    }
+
+    public void setProductExpiryDate(int productId, String expiryDate) {
+        // Set the expiry date for a product
+    }
+
+    public void manageDamagedItems() throws SQLException {
+        // Manage damaged items in the inventory
+    }
+
+    public void manageSalesReturn() throws SQLException {
+        // Manage sales returns in the inventory
+    }
+
+    public void receiveOffer(MarketingOffer offer, Marketer emp) throws SQLException {
+        // Process the offer and update the inventory
+        try (Connection conn = GlobalConnection.getConnection();
+                PreparedStatement stmt = conn
+                        .prepareStatement("UPDATE Inventory_Products SET price = ? WHERE id = ?")) {
+            stmt.setDouble(1, offer.getDiscout(offer));// methode getPrice in class marketingOffer isn't done yet in
+                                                       // progress
+                                                       // this methode will return new price of the product after
+                                                       // discount
+            stmt.setInt(2, offer.getProductId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating inventory: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    // public void disconnect() throws SQLException {
+    // // Disconnect from the inventory management module
+    // try (Connection conn = GlobalConnection.getConnection();
+    // PreparedStatement stmt = conn
+    // .prepareStatement("UPDATE Inventory_Products SET price = ? WHERE id = ?")) {
+    // stmt.executeUpdate();
+    // } catch (SQLException e) {
+    // System.out.println("Error disconnecting from inventory management module: " +
+    // e.getMessage());
+    // throw e;
+    // }
+    // }
 }

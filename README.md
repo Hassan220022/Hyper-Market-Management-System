@@ -9,7 +9,7 @@ This system is designed to be installed in large markets to manage sales and pur
 
 ## Marketing Module
 
-- [ ] Marketing employees can make reports about products (make queries).
+- [ ] Marketing employees can make reports about products (make queries).-->hagib data beta3at el product
 - [ ] Marketing employees make special offers and send them to inventory management.
 
 ## Inventory Management Module

@@ -37,6 +37,7 @@ CREATE TABLE Marketing_Offers (
   employee_id INT,
   product_id INT,
   offer_text TEXT,
+  price DECIMAL(10, 2), --> the new price of the product --> offered priced
   FOREIGN KEY (employee_id) REFERENCES Users(id),
   FOREIGN KEY (product_id) REFERENCES Inventory_Products(id)
 );

@@ -25,7 +25,7 @@ public class Product {
 
         try {
             Connection conn = GlobalConnection.getConnection();
-            String query = "INSTER INTO Inventory (id ,name, quantity,price,)";
+            String query = "INSTER INTO Inventory_Products (id ,name, quantity,price)";
             PreparedStatement stmt = conn.prepareStatement(query);
             String sql = "INSERT INTO Inventory_Products (name, description, quantity, price, expiry_date) VALUES (?, ?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class Product {
             stmt.setString(1, this.name);
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            this.id = rs.getInt("userId");
+            this.id = rs.getInt("UserId");
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -70,6 +70,10 @@ public class Product {
             rs.close();
             stmt.close();
         }
+    }
+
+    public int getID() throws SQLException {// get id of product form database from table inveentory_products
+        return this.id;
     }
 
     public void setId(int id) throws SQLException {
