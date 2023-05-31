@@ -40,6 +40,7 @@ public class Password {
         return hashedPassword;
     }
 
+    // test
     public static void main(String[] args) {
         // Create a new Password object with the password "password123"
         Password password = new Password("password123");
