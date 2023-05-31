@@ -26,7 +26,7 @@ public class Password {
         this.hashedPassword = rs.getString("hashed_password");
     }
 
-    public boolean checkPassword(String password) throws SQLException {
+    public boolean checkPassword(String password){
         return BCrypt.checkpw(password, hashedPassword);
     }
 

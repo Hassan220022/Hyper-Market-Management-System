@@ -1,5 +1,4 @@
 package SQL;
-import User.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
