@@ -7,7 +7,7 @@ public class User {
 
     public static DatabaseConnection DB;
     private static String username;
-    private static String password;
+    private static Password password;
     private static int id;
     private int role;
 
@@ -35,7 +35,7 @@ public class User {
     }
 
     public void setpassword(String password) {
-        this.password = password;
+        this.password.setPassword(password);
     }
 
     public int getId() {
@@ -47,7 +47,7 @@ public class User {
     }
 
     public String getpassword() {
-        return this.password;
+        return password.getHashedPassword();
     }
 
     public boolean login(String username, String password) throws SQLException {

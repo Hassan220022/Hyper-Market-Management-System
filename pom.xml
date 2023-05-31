@@ -6,21 +6,37 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <dependencies>
+
+<dependency>
+    <groupId>com.sample</groupId>
+    <artifactId>sample</artifactId>
+    <version>1.0</version>
+    <scope>system</scope>
+    <systemPath>/Users/mikawi/Developer/java/project/untitled folder/Hyper-Market-Management-System/Mylibs/swinglayout-1.jar</systemPath>
+</dependency>
+
+
         <dependency>
-            <groupId>123</groupId>
-            <artifactId>MySql</artifactId>
-            <version>01</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
         </dependency>
-        <dependency>
-            <groupId>1234</groupId>
-            <artifactId>swinglayout</artifactId>
-            <version>1</version>
-        </dependency>
+
+        
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
-            <version>211213</version>
+            <version>3.1.1</version>
         </dependency>
+
+        <dependencies>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+        </dependencies>
+        
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,3 +45,5 @@
         <exec.mainClass>group1.hypermarket.HyperMarket</exec.mainClass>
     </properties>
 </project>
+
+
