@@ -52,7 +52,8 @@ public class User {
 
     public boolean login(String username, String password) throws SQLException {
         int count = 0;
-        String sql = "select count(1) from users where username='" + username + "' and password='" + this.password
+        String hashedpassword = this.password.hashPassword(password);
+        String sql = "select count(1) from users where username='" + username + "' and password='" + hashedpassword
                 + "'";
         ResultSet rs = DB.s.executeQuery(sql);
         while (rs.next()) {
@@ -69,9 +70,10 @@ public class User {
     }
 
     public int updateProfile(String username, String password) {
-        setpassword(password);
+        String hashedpassword = this.password.hashPassword(password);
         try {
-            return DB.excuteUpdate("update employees set username='" + username + "' where id = '" + getId() + "'");
+            return DB.excuteUpdate("update employees set username='" + username + "',password='" + hashedpassword
+                    + "' where id = '" + getId() + "'");
         } catch (Exception e) {
             return 0;
         }
