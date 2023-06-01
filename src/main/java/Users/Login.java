@@ -41,7 +41,6 @@ public class Login {
     public boolean login(String username, String password) {
         try {
             String hashedpassword = Password.hashPasswordStatic(password);
-
             ResultSet rs = dc.executeQuery(
                     "select * from employees where username='" + username + "' and password='" + hashedpassword + "'");
             if (rs.next()) {
