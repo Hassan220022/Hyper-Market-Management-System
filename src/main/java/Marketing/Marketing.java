@@ -48,7 +48,8 @@ public class Marketing {
         return resultVector;
     }
 
-    public int makeOffer(String product_name, double offer, String ldate) {
+    public int makeOffer(String product_name, double offer, String ldate)// error code -1: error making offer
+    {
         try {
             rs = dc.executeQuery("select offer,offerEndDate from stock where name ='" + product_name + "'");
             if (rs.next()) {
