@@ -1,7 +1,5 @@
 package Users;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -25,9 +23,13 @@ public class Password {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
+    public static String hashPasswordStatic(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
     public int saveToDatabase(int userId) throws SQLException {
 
-        String query = "update employees set password='" + this.hashedPassword + "' where id ='" + userid + "'";
+        String query = "update employees set password='" + this.hashedPassword + "' where id ='" + userId + "'";
         int r = DB.excuteUpdate(query);
         return r;
     }
