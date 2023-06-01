@@ -34,7 +34,7 @@ public class User {
         this.username = username;
     }
 
-    public void setpassword(String password) {
+    public void setUserPassword(String password) {
         this.password.setPassword(password);
     }
 
@@ -77,7 +77,14 @@ public class User {
         } catch (Exception e) {
             return 0;
         }
-
     }
 
+    public static void main(String[] args) {
+        User user = new User("testuser", "testpassword", 1, 1);
+        String password = "newpassword";
+        user.setUserPassword(password);
+        String hashedPassword = user.getpassword();
+        System.out.println("Plain text password: " + password);
+        System.out.println("Hashed password: " + hashedPassword);
+    }
 }
