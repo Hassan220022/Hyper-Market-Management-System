@@ -22,7 +22,7 @@ public class User {
     public User(String username, String password, int id, int role) {
         this.id = id;
         this.username = username;
-        this.password = password;
+        this.password = new Password(password);
         this.role = role;
     }
 
@@ -52,7 +52,8 @@ public class User {
 
     public boolean login(String username, String password) throws SQLException {
         int count = 0;
-        String sql = "select count(1) from users where username='" + username + "' and password='" + password + "'";
+        String sql = "select count(1) from users where username='" + username + "' and password='" + this.password
+                + "'";
         ResultSet rs = DB.s.executeQuery(sql);
         while (rs.next()) {
             count = rs.getInt("count(1)");
@@ -68,9 +69,9 @@ public class User {
     }
 
     public int updateProfile(String username, String password) {
+        setpassword(password);
         try {
-            return DB.excuteUpdate("update employees set username='" + username + "',password='" + password
-                    + "' where id = '" + getId() + "'");
+            return DB.excuteUpdate("update employees set username='" + username + "' where id = '" + getId() + "'");
         } catch (Exception e) {
             return 0;
         }
