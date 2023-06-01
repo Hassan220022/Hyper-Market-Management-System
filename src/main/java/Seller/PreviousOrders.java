@@ -94,7 +94,7 @@ public class PreviousOrders extends javax.swing.JFrame {
                 new String[] {
                         "id", "OrderId", "Product name", "Product category", "Quantity", "Bill", "Date"
                 }) {
-            Class<String>[] types = new Class[] {
+            Class[] types = new Class[] {
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
                     java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
@@ -102,7 +102,7 @@ public class PreviousOrders extends javax.swing.JFrame {
                     false, false, false, true, true, false, false
             };
 
-            public Class<String> getColumnClass(int columnIndex) {
+            public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
 

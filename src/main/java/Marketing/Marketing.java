@@ -68,36 +68,6 @@ public class Marketing {
         return 0;
     }
 
-    public int makeOffer(String product_name, double offer, LocalDate offerEndDate) {
-        try {
-            PreparedStatement ps = dc.getConnection()
-                    .prepareStatement("SELECT offer, offerEndDate FROM stock WHERE name = ?");
-            ps.setString(1, product_name);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                double currentOffer = rs.getDouble("offer");
-                LocalDate currentEndDate = rs.getDate("offerEndDate").toLocalDate();
-                if (currentOffer > 0 && !OfferEnded(currentEndDate)) {
-                    return 0;
-                } else {
-                    PreparedStatement updatePs = dc.getConnection()
-                            .prepareStatement("UPDATE stock SET offer = ?, offerEndDate = ? WHERE name = ?");
-                    updatePs.setDouble(1, offer);
-                    updatePs.setDate(2, Date.valueOf(offerEndDate));
-                    updatePs.setString(3, product_name);
-                    return updatePs.executeUpdate();
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return 0;
-    }
-
-    public boolean OfferEnded(LocalDate endDate) {
-        return (endDate.isBefore(LocalDate.now()));
-    }
-
     public boolean OfferEnded(LocalDate endDate) {
         return (endDate.isBefore(LocalDate.now()));
     }
