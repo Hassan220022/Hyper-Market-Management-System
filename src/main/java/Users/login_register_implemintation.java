@@ -31,16 +31,18 @@ public class login_register_implemintation {
     }
 
     public void add_admin(String username, String password) {
-        dc.excuteUpdate(
-                "insert into employees(username,password,type) values('" + username + "','" + password + "','Admin')");
+        String hashedpassword = Password.hashPasswordStatic(password);
+        dc.excuteUpdate("insert into employees(username,password,type) values('" + username + "','" + hashedpassword
+                + "','Admin')");
         user_login back = new user_login();
         back.setVisible(true);
     }
 
     public boolean login(String username, String password) {
         try {
+            String hashedpassword = Password.hashPasswordStatic(password);
             ResultSet rs = dc.executeQuery(
-                    "select * from employees where username='" + username + "' and password='" + password + "'");
+                    "select * from employees where username='" + username + "' and password='" + hashedpassword + "'");
             if (rs.next()) {
                 switch (rs.getString("type")) {
                     case "Admin":
@@ -62,7 +64,7 @@ public class login_register_implemintation {
                 }
                 user.setId(rs.getInt("id"));
                 user.setUsername(rs.getString("username"));
-                user.setpassword(rs.getString("password"));
+                user.setUserPassword(rs.getString("password"));
                 return true;
             } else
                 JOptionPane.showMessageDialog(null, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
