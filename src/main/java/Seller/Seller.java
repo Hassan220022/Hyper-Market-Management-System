@@ -17,7 +17,6 @@ public class Seller {
     public Vector<String> getCategories() {
         Vector<String> resultVector = new Vector<>();
         try {
-
             ResultSet rs = dc.executeQuery("select distinct category from stock");
             while (rs.next()) {
                 resultVector.add(rs.getString("category"));
@@ -28,12 +27,12 @@ public class Seller {
         return resultVector;
     }
 
-    public Vector<String> getProduct(String s) {
+    public Vector<String> getProduct(String productCategory) // get product from database based on product category
+    {
         Vector<String> resultVector = new Vector<>();
         try {
-            ResultSet rs = dc.executeQuery("select name from stock where category ='" + s + "'");
+            ResultSet rs = dc.executeQuery("select name from stock where category ='" + productCategory + "'");
             while (rs.next()) {
-
                 resultVector.add(rs.getString("name"));
             }
         } catch (SQLException ex) {
@@ -42,28 +41,27 @@ public class Seller {
         return resultVector;
     }
 
-    public String getBill(String q, String pro) {
-        if (q.equals("")) {
+    public String getBill(String quantity, String namePraduct) {
+        if (quantity.equals("")) {
             return "";
         }
-
         try {
-            int qu = Integer.parseInt(q);
+            int quantity_product = Integer.parseInt(quantity);
 
-            ResultSet rs = dc.executeQuery("select quantity,offer,price from stock where name ='" + pro + "'");
+            ResultSet rs = dc.executeQuery("select quantity,offer,price from stock where name ='" + namePraduct + "'");
             if (rs.next()) {
-                if (qu > rs.getInt("quantity")) {
+                if (quantity_product > rs.getInt("quantity")) {
                     return "ERROR Quantity not enough";
                 } else {
                     if (rs.getDouble("offer") > 0) {
-                        double p = rs.getDouble("price");
-                        double o = rs.getDouble("offer");
+                        double priceProduct = rs.getDouble("price");
+                        double offerOnProducts = rs.getDouble("offer");
 
-                        o = p * o / 100;
-                        p -= o;
-                        return String.valueOf(p * qu);
+                        offerOnProducts = priceProduct * offerOnProducts / 100;
+                        priceProduct -= offerOnProducts;
+                        return String.valueOf(priceProduct * quantity_product);
                     } else {
-                        return String.valueOf(qu * rs.getDouble("price"));
+                        return String.valueOf(quantity_product * rs.getDouble("price"));
                     }
                 }
             } else {
