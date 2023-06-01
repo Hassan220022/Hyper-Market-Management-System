@@ -2,6 +2,7 @@
 package Admin;
 
 import DatabaseConncection.DatabaseConnection;
+import Users.Password;
 import Users.User;
 import java.sql.*;
 import java.util.*;
@@ -35,11 +36,12 @@ public class Admin_implementation extends User {
 
     void add(DefaultTableModel dft, String username, String password, String type) {
         try {
+            String hashedPassword = Password.hashPasswordStatic(password);
             ResultSet rs = dc.executeQuery("select count(1) from employees where username='" + username + "'");
             while (rs.next())
                 if (rs.getInt("count(1)") == 0) {
                     dc.excuteUpdate("insert into employees (username,password,type) values ('" + username + "','"
-                            + password + "','" + type + "')");
+                            + hashedPassword + "','" + type + "')");
                     JOptionPane.showMessageDialog(null, "A New Employee has been Added Successfully");
                     update_table(dft);
 
@@ -52,11 +54,13 @@ public class Admin_implementation extends User {
 
     void update(DefaultTableModel dft, String username, String password, String type, int s_row) {
         try {
+            String hashedPassword = Password.hashPasswordStatic(password);
             int id = Integer.parseInt(dft.getValueAt(s_row, 0).toString());
             ResultSet rs = dc.executeQuery("select id from employees where username='" + username + "'");
             if (!rs.next() || rs.getInt("id") == id) {
-                dc.excuteUpdate("update employees set username='" + username + "',password='" + password + "',type='"
-                        + type + "' where id='" + id + "'");
+                dc.excuteUpdate(
+                        "update employees set username='" + username + "',password='" + hashedPassword + "',type='"
+                                + type + "' where id='" + id + "'");
                 JOptionPane.showMessageDialog(null, "Employee has been updated");
                 update_table(dft);
             } else {
@@ -131,6 +135,7 @@ public class Admin_implementation extends User {
                 JOptionPane.showMessageDialog(null, "Invalid input Please Enter a Valid Password", "Null Password",
                         JOptionPane.ERROR_MESSAGE);
             } else {// (N_password.length()>0)
+                // String hashedPassword = Password.hashPasswordStatic(N_password);
                 int r = dc.excuteUpdate("Update employees set password='" + N_password + "' where type='Admin'");
                 if (r == 1)
                     JOptionPane.showMessageDialog(null, "Admin Password has been Update Successfully");

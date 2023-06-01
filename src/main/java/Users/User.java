@@ -52,7 +52,7 @@ public class User {
 
     public boolean login(String username, String password) throws SQLException {
         int count = 0;
-        String hashedpassword = this.password.hashPassword(password);
+        String hashedpassword = Password.hashPasswordStatic(password);
         String sql = "select count(1) from users where username='" + username + "' and password='" + hashedpassword
                 + "'";
         ResultSet rs = DB.s.executeQuery(sql);
@@ -70,21 +70,12 @@ public class User {
     }
 
     public int updateProfile(String username, String password) {
-        String hashedpassword = this.password.hashPassword(password);
+        String hashedpassword = Password.hashPasswordStatic(password);
         try {
             return DB.excuteUpdate("update employees set username='" + username + "',password='" + hashedpassword
                     + "' where id = '" + getId() + "'");
         } catch (Exception e) {
             return 0;
         }
-    }
-
-    public static void main(String[] args) {
-        User user = new User("testuser", "testpassword", 1, 1);
-        String password = "newpassword";
-        user.setUserPassword(password);
-        String hashedPassword = user.getpassword();
-        System.out.println("Plain text password: " + password);
-        System.out.println("Hashed password: " + hashedPassword);
     }
 }

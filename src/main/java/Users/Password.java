@@ -15,7 +15,7 @@ public class Password {
         this.hashedPassword = hashPassword(password);
     }
 
-    public boolean checkPassword(String password) {
+    public static boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
 
@@ -40,27 +40,5 @@ public class Password {
 
     public String getHashedPassword() {
         return hashedPassword;
-    }
-
-    // test
-    public static void main(String[] args) {
-        // Create a new Password object with the password "password123"
-        Password password = new Password("password123");
-
-        // Print the hashed password
-        System.out.println("Hashed password: " + password.getHashedPassword());
-
-        // Check if the password "password123" matches the hashed password
-        boolean isMatch = password.checkPassword("password123");
-        System.out.println("Password match: " + isMatch);
-
-        // Set a new password and save it to the database for user ID 1
-        password.setPassword("newpassword456");
-        try {
-            int rowsAffected = password.saveToDatabase(1);
-            System.out.println("Rows affected: " + rowsAffected);
-        } catch (SQLException ex) {
-            System.out.println("Error saving password to database: " + ex.getMessage());
-        }
     }
 }

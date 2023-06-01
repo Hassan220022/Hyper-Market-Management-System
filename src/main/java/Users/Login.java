@@ -40,36 +40,41 @@ public class Login {
 
     public boolean login(String username, String password) {
         try {
-            String hashedpassword = Password.hashPasswordStatic(password);
             ResultSet rs = dc.executeQuery(
-                    "select * from employees where username='" + username + "' and password='" + hashedpassword + "'");
+                    "select * from employees where username='" + username + "'");
             if (rs.next()) {
-                switch (rs.getString("type")) {
-                    case "Admin":
-                        Adminstration admin = new Adminstration();
-                        admin.setVisible(true);
-                        break;
-                    case "Marketing Employee":
-                        MarketingFrame marketing = new MarketingFrame();
-                        marketing.setVisible(true);
-                        break;
-                    case "Inventory Employee":
-                        Inventory inventory = new Inventory();
-                        inventory.setVisible(true);
-                        break;
-                    case "Seller":
-                        MakeOrder seller = new MakeOrder();
-                        seller.setVisible(true);
-                        break;
+                String hashedPassword = rs.getString("password");
+                if (Password.checkPassword(password, hashedPassword)) {
+                    switch (rs.getString("type")) {
+                        case "Admin":
+                            Adminstration admin = new Adminstration();
+                            admin.setVisible(true);
+                            break;
+                        case "Marketing Employee":
+                            MarketingFrame marketing = new MarketingFrame();
+                            marketing.setVisible(true);
+                            break;
+                        case "Inventory Employee":
+                            Inventory inventory = new Inventory();
+                            inventory.setVisible(true);
+                            break;
+                        case "Seller":
+                            MakeOrder seller = new MakeOrder();
+                            seller.setVisible(true);
+                            break;
+                    }
+                    user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setUserPassword(rs.getString(hashedPassword));
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid password", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setUserPassword(rs.getString("password"));
-                return true;
-            } else
-                JOptionPane.showMessageDialog(null, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid username", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(login_register_implemintation.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }

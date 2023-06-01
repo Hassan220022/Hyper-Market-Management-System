@@ -31,7 +31,8 @@ public class login_register_implemintation {
     }
 
     public void add_admin(String username, String password) {
-        String hashedpassword = Password.hashPasswordStatic(password);
+        Password passwordObj = new Password(password);
+        String hashedpassword = passwordObj.getHashedPassword();
         dc.excuteUpdate("insert into employees(username,password,type) values('" + username + "','" + hashedpassword
                 + "','Admin')");
         user_login back = new user_login();
@@ -40,37 +41,57 @@ public class login_register_implemintation {
 
     public boolean login(String username, String password) {
         try {
-            String hashedpassword = Password.hashPasswordStatic(password);
             ResultSet rs = dc.executeQuery(
-                    "select * from employees where username='" + username + "' and password='" + hashedpassword + "'");
+                    "select * from employees where username='" + username + "'");
             if (rs.next()) {
-                switch (rs.getString("type")) {
-                    case "Admin":
-                        Adminstration admin = new Adminstration();
-                        admin.setVisible(true);
-                        break;
-                    case "Marketing Employee":
-                        MarketingFrame marketing = new MarketingFrame();
-                        marketing.setVisible(true);
-                        break;
-                    case "Inventory Employee":
-                        Inventory inventory = new Inventory();
-                        inventory.setVisible(true);
-                        break;
-                    case "Seller":
-                        MakeOrder seller = new MakeOrder();
-                        seller.setVisible(true);
-                        break;
+                String hashedPassword = rs.getString("password");
+                if (Password.checkPassword(password, hashedPassword)) {
+                    switch (rs.getString("type")) {
+                        case "Admin":
+                            Adminstration admin = new Adminstration();
+                            admin.setVisible(true);
+                            break;
+                        case "Marketing Employee":
+                            MarketingFrame marketing = new MarketingFrame();
+                            marketing.setVisible(true);
+                            break;
+                        case "Inventory Employee":
+                            Inventory inventory = new Inventory();
+                            inventory.setVisible(true);
+                            break;
+                        case "Seller":
+                            MakeOrder seller = new MakeOrder();
+                            seller.setVisible(true);
+                            break;
+                    }
+                    user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setUserPassword(rs.getString(hashedPassword));
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid password", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setUserPassword(rs.getString("password"));
-                return true;
-            } else
-                JOptionPane.showMessageDialog(null, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid username", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(login_register_implemintation.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        login_register_implemintation loginImpl = new login_register_implemintation();
+
+        // Test admin_is_exist method
+        boolean adminExists = loginImpl.admin_is_exist();
+        System.out.println("Admin exists: " + adminExists);
+
+        // Test add_admin method
+        loginImpl.add_admin("omar", "abc");
+
+        // Test login method
+        boolean loggedIn = loginImpl.login("omar", "abc");
+        System.out.println("Logged in: " + loggedIn);
     }
 }
