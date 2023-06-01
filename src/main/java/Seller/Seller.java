@@ -14,8 +14,8 @@ public class Seller {
 
     DatabaseConnection dc = new DatabaseConnection();
 
-    public Vector getCategories() {
-        Vector resultVector = new Vector();
+    public Vector<String> getCategories() {
+        Vector<String> resultVector = new Vector<>();
         try {
 
             ResultSet rs = dc.executeQuery("select distinct category from stock");
@@ -28,8 +28,8 @@ public class Seller {
         return resultVector;
     }
 
-    public Vector getProduct(String s) {
-        Vector resultVector = new Vector();
+    public Vector<String> getProduct(String s) {
+        Vector<String> resultVector = new Vector<>();
         try {
             ResultSet rs = dc.executeQuery("select name from stock where category ='" + s + "'");
             while (rs.next()) {
@@ -139,7 +139,7 @@ public class Seller {
             DefaultTableModel DFT = dft;
             DFT.setRowCount(0);
             while (Rs.next()) {
-                Vector v = new Vector();
+                Vector<String> v = new Vector<>();
                 for (int i = 1; i <= Column_count; i++) {
                     v.add(Rs.getString("id"));
                     v.add(Rs.getString("order_id"));
@@ -232,8 +232,8 @@ public class Seller {
 
     void deleteOrder(String orderId) {
         ResultSet rs = dc.executeQuery("select count(*) as c from orders where order_id='" + orderId + "'");
-        Vector<String> p = new Vector();
-        Vector<String> q = new Vector();
+        Vector<String> p = new Vector<>();
+        Vector<String> q = new Vector<>();
 
         try {
             if (rs.next()) {
