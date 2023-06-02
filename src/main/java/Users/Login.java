@@ -64,9 +64,6 @@ public class Login {
                             seller.setVisible(true);
                             break;
                     }
-                    user.setId(rs.getInt("id"));
-                    user.setUsername(rs.getString("username"));
-                    user.setUserPassword(rs.getString(hashedPassword));
                     return true;
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid password", "Error",
