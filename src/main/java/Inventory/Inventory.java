@@ -307,7 +307,7 @@ public class Inventory extends javax.swing.JFrame {
         int i = stock.getSelectedRow();
         String id = (String) model.getValueAt(i, 0);
         String name = (String) model.getValueAt(i, 1);
-        String category = (String) new DecimalFormat("#.##").format(model.getValueAt(i, 2));
+        String category = (String) model.getValueAt(i, 2);
         String price = (String) model.getValueAt(i, 5);
         String quantity = (String) model.getValueAt(i, 6);
         String damages = (String) model.getValueAt(i, 7);
