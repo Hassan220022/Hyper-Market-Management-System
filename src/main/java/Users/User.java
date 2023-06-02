@@ -1,16 +1,12 @@
 package Users;
 
 import DatabaseConncection.*;
-import java.sql.*;
-
 public class User {
 
     public static DatabaseConnection DB;
     private static String username;
     private static Password password;
     private static int id;
-    private int role;
-
     public User() {
         DB = new DatabaseConnection();
     }
@@ -20,30 +16,29 @@ public class User {
     }
 
     public User(String username, String password, int id, int role) {
-        this.id = id;
-        this.username = username;
-        this.password = new Password(password);
-        this.role = role;
+        User.id = id;
+        User.username = username;
+        User.password = new Password(password);
     }
 
     public void setId(int id) {
-        this.id = id;
+        User.id = id;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        User.username = username;
     }
 
     public void setUserPassword(String password) {
-        this.password.setPassword(password);
+        User.password.setPassword(password);
     }
 
     public int getId() {
-        return this.id;
+        return User.id;
     }
 
     public String getUsername() {
-        return this.username;
+        return User.username;
     }
 
     public String getpassword() {
