@@ -213,7 +213,13 @@ public class UpdateProfile extends javax.swing.JFrame {
         }// GEN-LAST:event_barMousePressed
 
         private void updateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_updateActionPerformed
-                int r = user.updateProfile(name.getText(), pass.getText());
+                int r;
+                if (pass.getText() == " ")
+                        r = user.updateProfileUserName(name.getText());//
+                else if (name.getText() == " ")
+                        r = user.updateProfilePassword(pass.getText());//
+                else
+                        r = user.updateProfile(name.getText(), pass.getText());//
                 if (r == 1) {
                         JOptionPane.showMessageDialog(null, "Profile updated successfuly!");
                         this.dispose();

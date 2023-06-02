@@ -50,21 +50,6 @@ public class User {
         return password.getHashedPassword();
     }
 
-    public boolean login(String username, String password) throws SQLException {
-        int count = 0;
-        String hashedpassword = Password.hashPasswordStatic(password);
-        String sql = "select count(1) from users where username='" + username + "' and password='" + hashedpassword
-                + "'";
-        ResultSet rs = DB.s.executeQuery(sql);
-        while (rs.next()) {
-            count = rs.getInt("count(1)");
-        }
-        if (count == 1) {
-            return true;
-        }
-        return false;
-    }
-
     public void LogOut() {
         System.exit(0);
     }
@@ -74,6 +59,25 @@ public class User {
         try {
             return DB.excuteUpdate("update employees set username='" + username + "',password='" + hashedpassword
                     + "' where id = '" + getId() + "'");
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int updateProfileUserName(String username)// update only username
+    {
+        try {
+            return DB.excuteUpdate("update employees set username='" + username + "' where id = '" + getId() + "'");
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int updateProfilePassword(String password) {
+        String hashedpassword = Password.hashPasswordStatic(password);
+        try {
+            return DB.excuteUpdate(
+                    "update employees set password='" + hashedpassword + "' where id = '" + getId() + "'");
         } catch (Exception e) {
             return 0;
         }

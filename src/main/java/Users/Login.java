@@ -32,7 +32,8 @@ public class Login {
 
     public void add_admin(String username, String password) {
         String hashedpassword = Password.hashPasswordStatic(password);
-        dc.excuteUpdate("insert into employees(username,password,type) values('" + username + "','" + hashedpassword
+        dc.excuteUpdate("insert into employees(username,password,type) values('" +
+                username + "','" + hashedpassword
                 + "','Admin')");
         user_login back = new user_login();
         back.setVisible(true);
@@ -68,14 +69,18 @@ public class Login {
                     user.setUserPassword(rs.getString(hashedPassword));
                     return true;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Invalid password", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Invalid password", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Invalid username", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Invalid username", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(login_register_implemintation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         return false;
     }
+
 }
