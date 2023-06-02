@@ -1,6 +1,8 @@
 
 package Seller;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -18,7 +20,23 @@ public final class MakeOrder extends javax.swing.JFrame {
     public MakeOrder() {
         initComponents();
         setCategories();
+        this.addWindowListener(new WindowAdapter() {
+                        public void windowClosing(WindowEvent evt) {
+                                onExit();
+                        }
+                });
     }
+
+    public void onExit() {
+                int r = JOptionPane.showConfirmDialog(null, "Are you sure you want to sign out?", "Sign out",
+                                JOptionPane.YES_NO_OPTION);
+                if (r == 0) {
+                        Users.user_login login = new Users.user_login();
+                        login.setVisible(true);
+                        this.dispose();
+                }
+        }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -51,9 +69,9 @@ public final class MakeOrder extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         total = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setFont(new java.awt.Font("AGA Arabesque", 1, 18)); // NOI18N
-        setUndecorated(true);
+        // setUndecorated(true);
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 255));
         jLabel2.setFont(new java.awt.Font("Vijaya", 1, 36)); // NOI18N

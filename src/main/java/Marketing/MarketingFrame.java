@@ -5,6 +5,9 @@ import DatabaseConncection.DatabaseConnection;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 
@@ -622,18 +625,18 @@ public class MarketingFrame extends javax.swing.JFrame {
         }
     }
 
-    public void set() {
-        txt_id.setText((String) v.get(0));
-        txt_name.setText((String) v.get(1));
-        txt_category.setText((String) v.get(2));
-        txt_productDate.setText((String) v.get(3));
-        txt_expiryDate.setText((String) v.get(4));
-        txt_price.setText((String) v.get(5));
-        txt_quantity.setText((String) v.get(6));
-        txt_damages.setText((String) v.get(7));
-        txt_short.setText((String) v.get(8));
-        txt_offer.setText((String) (v.get(9)));
-    }
+        public void set() {
+                txt_id.setText((String) v.get(0));
+                txt_name.setText((String) v.get(1));
+                txt_category.setText((String) v.get(2));
+                txt_productDate.setText((String) v.get(3));
+                txt_expiryDate.setText((String) v.get(4));
+                txt_price.setText((String) v.get(5));
+                txt_quantity.setText((String) v.get(6));
+                txt_damages.setText((String) v.get(7));
+                txt_short.setText((String) v.get(8));
+                txt_offer.setText((String) (v.get(9)));
+        }
 
     public void reset() {
         txt_name.setText("");

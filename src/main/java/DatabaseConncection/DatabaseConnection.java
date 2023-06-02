@@ -39,4 +39,18 @@ public class DatabaseConnection {
             return 0;
         }
     }
+
+    //test
+
+    public static void main(String[] args) {
+        DatabaseConnection dc = new DatabaseConnection();
+        ResultSet rs = dc.executeQuery("select * from employees");
+        try {
+            while(rs.next()){
+                System.out.println(rs.getString("username"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

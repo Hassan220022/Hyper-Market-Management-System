@@ -19,7 +19,15 @@
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
-            <version>211213</version>
+            <version>3.1.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.sample</groupId>
+            <artifactId>sample</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\omara\Desktop\VSCODE\java\HyperMarket\Mylibs\swinglayout-1.jar</systemPath>
         </dependency>
     </dependencies>
     <properties>

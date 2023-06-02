@@ -3,6 +3,7 @@ import Users.user_login;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -306,7 +307,7 @@ public class Inventory extends javax.swing.JFrame {
         int i = stock.getSelectedRow();
         String id = (String) model.getValueAt(i, 0);
         String name = (String) model.getValueAt(i, 1);
-        String category = (String) model.getValueAt(i, 2);
+        String category = (String) new DecimalFormat("#.##").format(model.getValueAt(i, 2));
         String price = (String) model.getValueAt(i, 5);
         String quantity = (String) model.getValueAt(i, 6);
         String damages = (String) model.getValueAt(i, 7);
@@ -315,6 +316,7 @@ public class Inventory extends javax.swing.JFrame {
         updateProduct.setDataToTextFields(data); 
         updateProduct.setID(Integer.parseInt(id));
     }//GEN-LAST:event_stockMouseClicked
+//                txt_price.setText((String)  new DecimalFormat("#.##").format(v.get(5)));
 
     private void close1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close1MouseClicked
         int r=JOptionPane.showConfirmDialog(null, "Are you sure you want to sign out?", "Sign out",JOptionPane.YES_NO_OPTION);

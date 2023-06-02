@@ -2,6 +2,8 @@
 package Marketing;
 
 import java.sql.*;
+import java.text.DecimalFormat;
+
 import DatabaseConncection.*;
 import java.time.LocalDate;
 import java.util.Vector;
@@ -23,6 +25,7 @@ public class Marketing {
             if (rs.next()) {
                 double price = rs.getDouble("price");
                 double offer = rs.getDouble("offer");
+                
 
                 offer = price * offer / 100;
                 price -= offer;
@@ -34,7 +37,7 @@ public class Marketing {
                 resultVector.add(date.toLocalDate().toString());
                 date = rs.getDate("expiry_date");
                 resultVector.add(date.toLocalDate().toString());
-                resultVector.add(String.valueOf(price));
+                resultVector.add(new DecimalFormat("#.##").format(price));
                 resultVector.add(rs.getString("quantity"));
                 resultVector.add(rs.getString("damages"));
                 resultVector.add(rs.getString("shortage"));
